@@ -37,8 +37,10 @@ void userConnected()
 //loop. You can use "if (WLED_CONNECTED)" to check for successful connection
 void userLoop()
 {
-    if (WLED_CONNECTED)
+    static unsigned long int timestamp = 0;
+    if (WLED_CONNECTED && millis() - timestamp > 250)
     {
+        timestamp = millis();
         u8x8.drawString(0, 0, ("WiFi RSSI: " + String(WiFi.RSSI())).c_str());
         u8x8.drawString(0, 1, ("IP: " + IpAddress2String(WiFi.localIP())).c_str());
         u8x8.drawString(0, 2, ("Power: " + String(strip.currentMilliamps) + " mA").c_str());
